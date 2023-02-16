@@ -1,0 +1,149 @@
+#include<stdio.h>
+#include<stdlib.h>
+struct node{
+    int val;
+    struct node *next;
+};
+
+struct node *create(struct node *head)
+{
+    struct node *new,*prev;
+    int x;
+    printf("enter values in ascending order and enter -1 to exit");
+    scanf("%d",&x);
+    while(x!=-1){
+        new=(struct node*)malloc(sizeof(struct node));
+        new->val=x;
+        new->next=NULL;
+        if(head==NULL)
+        {
+            head=new;
+            prev=new;
+        }
+        else{
+            prev->next=new;
+            prev=new;
+        }
+        printf("enter values in ascending order and enter -1 to exit");
+    scanf("%d",&x);
+        
+    }
+    
+    return head;
+}
+
+struct node *mergesort(struct node *l1,struct node *l2)
+{
+    if(l1==NULL && l2==NULL){
+        return NULL;
+    }
+    else if(l1==NULL)
+    {
+        return l2;
+    }
+    else if(l2==NULL)
+    {
+        return l1;
+    }
+    else
+    {
+        struct node *l3=(struct node*)malloc(sizeof(struct node));
+        struct node *temp1=l1;
+        struct node *temp2=l2;
+        struct node *res=l3;
+        if(temp1->val<temp2->val)
+        {
+            l3->val=temp1->val;
+            temp1=temp1->next;
+        }
+        else{
+            l3->val=temp2->val;
+            temp2=temp2->next;
+        }
+        while(temp1!=NULL && temp2!=NULL)
+        {
+            if(temp1->val<temp2->val)
+            {
+                res->next=temp1;
+                res=temp1;
+                temp1=temp1->next;
+            }
+            else
+            {
+                res->next=temp2;
+                res=temp2;
+                temp2=temp2->next;
+            }
+            
+        }
+        if(temp1!=NULL)
+        {
+            while(temp1!=NULL)
+            {
+                res->next=temp1;
+                res=temp1;
+                temp1=temp1->next;
+            }
+        }
+        if(temp2!=NULL)
+        {
+            while(temp2!=NULL)
+            {
+                res->next=temp2;
+                res=temp2;
+                temp2=temp2->next;
+            }
+            
+        }
+    return l3;
+    }
+}
+
+struct node *mergeklists(struct node **list,int listsize)
+{
+    if(listsize==0)
+    {
+        return NULL;
+    }
+    else
+    {
+        struct node *res=list[0];
+        for(int i=1;i<listsize;i++)
+        {
+            res=mergesort(res,list[i]);
+            
+        }
+    return res;
+    }
+}
+
+void display(struct node *head)
+{
+    struct node *temp=head;
+    printf("[");
+    while(temp!=NULL)
+    {
+        printf("%d,",temp->val);
+        printf(" ");
+        temp=temp->next;
+    }
+    printf("]");
+    
+}
+
+void main()
+{
+    int listsize;
+    printf("enter listsize");
+    scanf("%d",&listsize);
+    struct node *list[listsize];
+    struct node *temp,*res;
+    for(int i=0;i<listsize;i++)
+    {
+        temp=NULL;
+        temp=create(temp);
+        list[i]=temp;
+    }
+    res=mergeklists(list,listsize);
+    display(res);
+}
