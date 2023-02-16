@@ -1,0 +1,33 @@
+#include<stdio.h>
+int unique_path(int m,int n)
+{
+    int g[m][n];
+    int i,j;
+    for(int i=0;i<m;i++)
+    {
+        g[i][0]=1;
+    }
+    for(int i=0;i<n;i++)
+    {
+        g[0][i]=1;
+    }
+    for(i=1;i<m;i++)
+    {
+        for(j=1;j<n;j++)
+        {
+            g[i][j]=g[i][j-1]+g[i-1][j];
+        }
+    }
+    
+    return g[m-1][n-1];
+}
+
+void main()
+{
+    int m,n;
+    printf("enter m:");
+    scanf("%d",&m);
+    printf("enter n:");
+    scanf("%d",&n);
+    printf("%d",unique_path(m,n));
+}
